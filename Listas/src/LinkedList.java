@@ -40,25 +40,61 @@ public class LinkedList<E> implements Lista<E> {
 	@Override
 	public void agregarElemento(E e) {
 
-
+		Nodo<E> aux = new Nodo<E>(null,e);
+		if(esVacia()){
+			agregarInicio(e);
+		}else{
+			ultimo.setSiguiente(aux);
+			ultimo = aux;
+			tamanio++;
+		}
 
 	}
 
 	@Override
 	public void agregarInicio(E e) {
+		Nodo<E> aux = new Nodo<E>(null,e);
+		if(esVacia()){
+			primero = aux;
+			ultimo = aux;
+		}else{
+			aux.setSiguiente(primero);
+			primero = aux;
+		}
+		tamanio++;
 
 	}
 
 	@Override
 	public void agregarFinal(E e) {
-	
+		agregarElemento(e);
 
 	}
 
 	@Override
 	public void agregarPosicion(E e, int posicion) {
 
+		if(posicion>=0 && posicion <=tamanio){
+			if(posicion==0){
+				agregarInicio(e);		
+			}else{
+				if(posicion==tamanio){
+					agregarFinal(e);
+				}else{
+					Nodo<E> iterador = primero;
+					Nodo<E> aux = new Nodo<E>(null,e);
 
+					for(int i=0;i<(posicion-1);i++){
+						iterador = iterador.getSiguiente();
+					}
+					aux.setSiguiente(iterador.getSiguiente());
+					iterador.setSiguiente(aux);
+					tamanio++;
+				}
+			}
+		}else{
+			throw new IndexOutOfBoundsException();
+		}
 	}
 
 	@Override
@@ -70,17 +106,82 @@ public class LinkedList<E> implements Lista<E> {
 
 	@Override
 	public E eliminarElementoInicio() {
-
+		
+		E auxI=null;
+		Nodo<E> auxN=null;
+		if(!esVacia()){
+			if(primero==ultimo){
+				
+				auxI = primero.getInfo();
+				primero.setInfo(null);
+				primero=ultimo=null;
+			}else{
+					auxI = primero.getInfo();
+					auxN = primero;
+					primero = primero.getSiguiente();
+					auxN.setInfo(null);
+					auxN.setSiguiente(null);					
+			}
+			tamanio--;
+			return auxI;
+		}else{
+			throw new NullPointerException();
+		}
 	}
 
 	@Override
 	public E eliminarElementoFinal() {
-
+		Nodo<E> auxN=null;
+		E auxI=null;
+		if(!esVacia()){
+			
+			if(primero==ultimo){
+				
+				return eliminarElementoInicio();
+			}else{
+				
+				for(auxN=primero;auxN.getSiguiente().getSiguiente()!=null;auxN = auxN.getSiguiente()){}
+				auxI = ultimo.getInfo();
+				ultimo.setInfo(null);
+				auxN.setSiguiente(null);
+				ultimo = auxN;
+				tamanio--;
+				return auxI;
+			}
+		}else{
+			
+			throw new NullPointerException();
+		}
 	}
 
 	@Override
 	public E eliminarElementoPosicion(int posicion) {
-	
+		Nodo<E> auxN,auxN2=null;
+		E auxI=null;
+		int i;
+		if(!esVacia()){
+				
+			if(posicion >= 0 && posicion < numElementos()){
+			
+				if(ultimo==primero){
+					return eliminarElemento();				
+				}else{
+					for(auxN=primero,i=0;i<posicion-1;auxN = auxN.getSiguiente(),i++){}
+					auxI = auxN.getSiguiente().getInfo();
+					auxN.getSiguiente().setInfo(null);
+					auxN2 = auxN.getSiguiente();
+					auxN.setSiguiente(auxN2.getSiguiente());
+					auxN2.setSiguiente(null);
+					tamanio--;
+					return auxI;
+				}		
+			}else{
+			    throw new IndexOutOfBoundsException();	
+			}			
+		}else{
+			
+			throw new NullPointerException();	
+		}
 	}
 
 	@Override
@@ -96,7 +197,15 @@ public class LinkedList<E> implements Lista<E> {
 
 	@Override
 	public void limpiarLista() {
-	
+		Nodo<E> aux=primero;
+		while(aux!=null){
+			aux.setInfo(null);
+			primero = aux.getSiguiente();
+			aux.setSiguiente(null);
+			aux=primero;
+
+		}
+		ultimo=null;
 
 	}
 
@@ -116,7 +225,27 @@ public class LinkedList<E> implements Lista<E> {
 
 	@Override
 	public E consultar(int posicion) {
-		
+		Nodo<E> auxN;
+		E auxI=null;
+		int i;
+		if(!esVacia()){
+			
+			if(posicion >= 0 && posicion < numElementos()){
+			
+				if(ultimo==primero){
+					return primero.getInfo();				
+				}else{
+					for(auxN=primero,i=0;i<posicion;auxN = auxN.getSiguiente(),i++){}
+					auxI = auxN.getInfo();
+					return auxI;
+				}		
+			}else{
+			    throw new IndexOutOfBoundsException();	
+			}			
+		}else{
+			
+			throw new NullPointerException();	
+		}
 	}
     @Override
     public Iterator<E> iterator() {

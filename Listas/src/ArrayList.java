@@ -1,275 +1,205 @@
 import java.util.Iterator;
 
-// Clase ArrayList generica.   //Recuerden implementar todos los métodos en ArrayList.
-// E representa el tipo de dato que guardara la lista.
-// Implementa la interfaz Lista<E>.
+
 public class ArrayList<E> implements Lista<E> {
 
-    // Tamanio maximo inicial por defecto del arreglo
-    private static final int MAX = 5;
-
-    // Indica cuantos elementos tiene actualmente la lista
-    private int indice = 0;
-
-    // Arreglo donde se almacenan los datos
-    private Object[] datos = null; 
-
-    // Constructor por defecto.
-    // Crea una lista con tamanio inicial MAX.
-    public ArrayList() {
-        this(MAX);
-    }
-
-    // Constructor que permite indicar el tamanio inicial del arreglo.
-    public ArrayList(int tam) {
-
-        // Si el tamanio es negativo, se lanza una excepcion.
-        if (tam < 0) {
-            throw new IllegalArgumentException();
-        }
-
-        // Se crea el arreglo con el tamanio indicado.
-        datos = new Object[tam];
-    }
-
-    // Metodo privado que limpia las referencias del arreglo.
-    // Esto ayuda a que los objetos puedan ser eliminados por el Garbage Collector.
-    private void asegurarGC() {
-        for (int i = 0; i < datos.length; i++) {
-            datos[i] = null;
-        }
-    }
-
-    // Agrega un elemento al final de la lista.
-    @Override
-    public void agregarFinal(E e) {
-
-        Object[] aux = null;
-
-        // Si el arreglo ya casi esta lleno, se crea uno mas grande.
-        if (!(indice < datos.length - 1)) {
-
-            // Nuevo arreglo con crecimiento del 50%.
-            aux = new Object[datos.length + datos.length / 2];
-
-            // Copia los datos del arreglo viejo al nuevo.
-            System.arraycopy(datos, 0, aux, 0, datos.length);
-
-            // Limpia las referencias del arreglo anterior.
-            asegurarGC();
-
-            // El arreglo principal ahora apunta al arreglo nuevo.
-            datos = aux;
-        }
-
-        // Se guarda el elemento en la posicion actual.
-        datos[indice] = e;
-
-        // Se incrementa el numero de elementos.
-        indice++;
-    }
-
-    // Agrega un elemento al inicio de la lista.
-    @Override
-    public void agregarInicio(E e) {
-
-        Object[] auxobj = null;
-
-        // Imprime el numero actual de elementos.
-        System.out.println(indice);
-
-        // Si todavia hay espacio, recorre los elementos una posicion a la derecha.
-        if (indice < datos.length - 1) {
-            System.arraycopy(datos, 0, datos, 1, indice + 1);
-        } else {
-
-            // Si no hay espacio, crea un arreglo mas grande.
-            auxobj = new Object[datos.length + datos.length / 2];
-
-            // Copia los elementos al nuevo arreglo desde la posicion 1.
-            System.arraycopy(datos, 0, auxobj, 1, datos.length);
-
-            // Limpia las referencias del arreglo anterior.
-            asegurarGC();
-
-            // El arreglo principal ahora apunta al arreglo nuevo.
-            datos = auxobj;
-        }
-
-        // Coloca el nuevo elemento al inicio.
-        datos[0] = e;
-
-        // Aumenta el contador de elementos.
-        indice++;
-    }
-
-    // Indica si la lista esta vacia.
-    @Override
-    public boolean esVacia() {
-        return indice == 0;
-    }
-
-    // Devuelve cuantos elementos tiene la lista.
-    @Override
-    public int numElementos() {
-        return indice;
-    }
-
-    // Limpia la lista.
-    @Override
-    public void limpiarLista() {
-
-        // Reinicia el contador de elementos.
-        indice = 0;
-
-        // Borra las referencias de los objetos almacenados.
-        asegurarGC();
-    }
+    private static final int  MAX=5;
+	private int indice=0;
+	private Object[] datos=null; 
 
 
 
-   // Indica al compilador que no muestre la advertencia
-// por la conversión (cast) de Object[] a E[].
-// Esta advertencia aparece porque Java no puede verificar
-// completamente el tipo genérico durante la compilación.
-@SuppressWarnings("unchecked")
+	public ArrayList() {
 
-// Indica que este método sobrescribe uno definido
-// en una interfaz o clase padre.
-@Override
-public E[] convertirArreglo() {
+		this(MAX);
 
-    // Se crea un nuevo arreglo de tipo Object
-    // cuyo tamaño es exactamente igual al número
-    // de elementos almacenados en la lista (indice).
-    //
-    // No se utiliza datos.length porque ese valor
-    // representa la capacidad total del arreglo y
-    // puede contener posiciones vacías.
-    Object[] aux = new Object[indice];
+	}
 
-    // Copia los elementos del arreglo interno "datos"
-    // hacia el nuevo arreglo "aux".
-    //
-    // Parámetros:
-    // datos   -> arreglo origen.
-    // 0       -> posición inicial desde donde copiar.
-    // aux     -> arreglo destino.
-    // 0       -> posición inicial donde se pegarán.
-    // indice  -> cantidad de elementos que se copiarán.
-    //
-    // Solo se copian los elementos válidos de la lista,
-    // ignorando las posiciones vacías del arreglo original.
-    System.arraycopy(datos, 0, aux, 0, indice);
+	public ArrayList(int tam) {
 
-    // El arreglo "aux" es de tipo Object[].
-    // Sin embargo, el método debe regresar un arreglo
-    // del tipo genérico E[].
-    //
-    // Por ello se realiza una conversión (cast)
-    // de Object[] a E[] antes de devolverlo.
-    return (E[]) aux;
-}
+		if(tam<0){
+			throw new IllegalArgumentException();
+		}
+		datos = new Object[tam];
+
+	}
+
+	private void asegurarGC(){
+
+		for(int i=0;i<datos.length;i++){
+			datos[i]=null;
+		}
+	}
+
+	@Override
+	public void agregarElemento(E e) {
+
+		Object[] aux=null;
+		if(!(indice<datos.length-1)){
+
+			aux = new Object[datos.length+datos.length/2];
+			System.arraycopy(datos,0,aux,0,datos.length);
+			//DEBEMOS ELIMINAR TODAS LAS REFERENCIAS...DEJAR LOS OBJETOS EN EL "LIMBO"
+			asegurarGC();
+			datos = aux;
+
+		}
+		datos[indice] = e;
+		indice++;
+	}
+
+	@Override
+	public void agregarInicio(E e) {
+		Object[] auxobj=null;
+		System.out.println(indice);
+		if(indice<datos.length-1){
+			System.arraycopy(datos,0,datos,1,indice+1);
+		}else{
+			auxobj = new Object[datos.length+datos.length/2];
+			System.arraycopy(datos,0,auxobj,1,datos.length);
+			//DEBEMOS ELIMINAR TODAS LAS REFERENCIAS...DEJAR LOS OBJETOS EN EL "LIMBO"
+			asegurarGC();
+			datos = auxobj;
+
+		}
+		datos[0] = e;
+		indice++;
+
+	}
+
+	@Override
+	public void agregarFinal(E e) {
+		agregarElemento(e);
+
+	}
+
+	@Override
+	public void agregarPosicion(E e, int posicion) {
+		Object[] auxobj=null;
+		if(!(posicion<0 || posicion > numElementos())){
+			if(!(indice < datos.length-1)){
+				auxobj = new Object[datos.length+datos.length/2];
+				System.arraycopy(datos,0,auxobj,0,datos.length);
+				//DEBEMOS ELIMINAR TODAS LAS REFERENCIAS...DEJAR LOS OBJETOS EN EL "LIMBO"
+				asegurarGC();
+				datos=auxobj;
+			}	
+			System.arraycopy(datos,posicion,datos,posicion+1,indice-posicion);
+			datos[posicion] = e;
+			indice++;
+		}else{
+			throw new IndexOutOfBoundsException();
+		}
+
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public E eliminarElemento() {
+		if(!esVacia()){
+			E aux =  null;
+			aux = (E)datos[indice-1];
+			indice--;
+			return aux;
+		}
+		throw new NullPointerException();
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public E eliminarElementoInicio() {
+		if(!esVacia()){
+			E aux =  null;
+			aux = (E)datos[0];
+			System.arraycopy(datos,1,datos,0,indice);
+			indice--;
+			return aux;
+		}
+		throw new NullPointerException();
+	}
+
+	@Override
+	public E eliminarElementoFinal() {
+		return eliminarElemento();
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public E eliminarElementoPosicion(int posicion) {
+		if(!(posicion<0 || posicion > (numElementos()-1))){
+
+			E aux =  null;
+			aux = (E)datos[posicion];
+			System.arraycopy(datos,posicion+1,datos,posicion,indice-posicion);
+			indice--;
+			return aux;
+		}else{
+			
+			throw new IndexOutOfBoundsException();
+		}
+
+	}
+
+	@Override
+	public boolean esVacia() {
+
+		return(indice==0);
+	}
+
+	@Override
+	public int numElementos() {
+		return indice;
+	}
+
+	@Override
+	public void limpiarLista() {
+		indice = 0;
+		asegurarGC();
+
+	}
 
 
-    //Un Iterator : Permite recorrer la lista usando un Iterator.
-        // Un Iterator es un objeto que permite recorrer una colección
-    // elemento por elemento, sin necesidad de acceder directamente
-    // a las posiciones del arreglo.
-    // 
-    // En este caso, el Iterator permitirá recorrer los elementos
-    // guardados en nuestra lista ArrayList usando un ciclo for-each,
-    // por ejemplo:
-    //
-    // for(E elemento : lista) {
-    //     System.out.println(elemento);
-    // }
-    //
-    // Para que esto funcione, la clase debe proporcionar el método iterator().
+	@SuppressWarnings("unchecked")
+	@Override
+	public E[] convertirArreglo() {
+		Object[] aux = new Object[indice];	
+		System.arraycopy(datos,0,aux,0,indice);
+		return  (E[])aux;
+	}
 
-    // Este método permite recorrer la lista usando un Iterator.
+	@SuppressWarnings("unchecked")
+	@Override
+	public E consultar(int posicion) {
+		if(!(posicion<0 || posicion >= numElementos())){
+			
+			return (E)datos[posicion];
+			
+		}else{
+			throw new IndexOutOfBoundsException();
+		}
+	}
+
     @Override
     public Iterator<E> iterator() {
-
-        // Se crea y se regresa un nuevo Iterator.
-        // Este Iterator sabe cómo recorrer los datos guardados
-        // dentro del arreglo interno llamado datos.
-        //
-        // new Iterator<E>() { ... }
-        // significa que estamos creando una clase anónima,
-        // es decir, una clase sin nombre que implementa Iterator.
         return new Iterator<E>() {
 
-            // Esta variable indica la posición actual del recorrido.
-            // Inicia en 0 porque los arreglos en Java comienzan
-            // en la posición 0.
-            //
-            // Ejemplo:
-            // datos[0], datos[1], datos[2], ...
-            int i = 0;
-
-            // Este método pregunta si todavía quedan elementos
-            // por recorrer en la lista.
+            int i=0;
             @Override
             public boolean hasNext() {
-
-                // indice representa la cantidad de elementos reales
-                // que tiene la lista.
-                //
-                // i representa la posición actual del Iterator.
-                //
-                // Mientras i sea menor que indice, significa que
-                // todavía hay elementos disponibles.
-                //
-                // Ejemplo:
-                // Si indice = 3, hay elementos en:
-                // datos[0], datos[1] y datos[2]
-                //
-                // Si i = 0: 0 < 3 → true
-                // Si i = 1: 1 < 3 → true
-                // Si i = 2: 2 < 3 → true
-                // Si i = 3: 3 < 3 → false
-                //
-                // Cuando devuelve false, el recorrido termina.
-                return i < indice;
+                return i<indice;
             }
 
-            // Este método devuelve el siguiente elemento de la lista.
             @Override
             public E next() {
-
-                // Como el arreglo datos fue declarado como Object[],
-                // puede guardar objetos de cualquier tipo.
-                //
-                // Sin embargo, la lista es genérica: ArrayList<E>.
-                // Eso significa que debe regresar elementos del tipo E.
-                //
-                // Por eso se hace una conversión:
-                // de Object a E.
-                //
-                // Ejemplo:
-                // Si la lista es ArrayList<String>,
-                // entonces E representa String.
                 @SuppressWarnings("unchecked")
-                E aux = (E) datos[i];
-
-                // Después de guardar el elemento actual en aux,
-                // se aumenta i para avanzar a la siguiente posición.
-                //
-                // Ejemplo:
-                // Si i valía 0, ahora valdrá 1.
-                // Si i valía 1, ahora valdrá 2.
+                E aux=(E)datos[i];
                 i++;
-
-                // Se regresa el elemento que se obtuvo antes de avanzar.
-                //
-                // Aunque i ya cambió, aux conserva el dato anterior.
-                //
-                // Ejemplo:
-                // Si datos[0] era "Ana", se regresa "Ana".
-                // En la siguiente llamada a next(), se regresará datos[1].
                 return aux;
             }
+            
         };
     }
+
+
 }
+
