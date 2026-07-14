@@ -42,24 +42,58 @@ public class LinkedList<E> implements Lista<E> {
 
 
 
+
 	}
 
 	@Override
 	public void agregarInicio(E e) {
-
-	}
+        Nodo <E> aux= new Nodo <E>(null, e);
+        if(esVacia()){
+        this.primero=aux;
+        this.ultimo=aux;
+        aux=null;
+        this.tamanio++;
+}else{
+aux.setSiguiente(this.primero);
+this.primero=aux;
+aux=null;
+this.tamanio++;
+}
+}
 
 	@Override
 	public void agregarFinal(E e) {
-	
+       Nodo <E> aux= new Nodo <E>  	
+
+
+
 
 	}
 
 	@Override
 	public void agregarPosicion(E e, int posicion) {
-
-
-	}
+       if(posicion>=0 && posicion<=tamanio){
+       if(posicion=0){
+       agregarInicio(e);
+}else{
+if (posicion==tamanio){
+agregarFinal(e);
+}else{
+Nodo<E> aux= new Nodo<E>(null, e);
+Nodo<E> iterador = primero;
+for (int i=0; i<posicion-1; i++) {
+iterador=iterador.getSiguiente();
+}
+aux.setSiguiente(iterador.getSiguiente());
+iterador.setSiguiente(aux);
+aux=null;
+tamanio++;
+}
+}
+}else {
+       throw new IndexOutOfBoundsException("Lo sentimos posicion invalida");
+}
+}
 
 	@Override
 	public E eliminarElemento() {
