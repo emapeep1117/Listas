@@ -55,7 +55,16 @@ this.tamanio++;
 /////////////////////////////////////////////////////////////////////////
 @Override
 public void agregarFinal(E e) {
-Nodo <E> aux= new Nodo <E>
+Nodo <E> aux= new Nodo <E>(null, e);
+if(esVacia()){
+this.primero=aux;
+this.ultimo=aux;
+}else{
+this.ultimo.setSiguiente(aux);
+this.ultimo=aux;
+}
+aux=null;
+this.tamanio++;
 }
 /////////////////////////////////////////////////////////////////////////
 @Override
@@ -91,6 +100,10 @@ return eliminarElementoFinal();
 
 @Override
 public E eliminarElementoInicio() {
+
+
+
+
 }
 
 /////////////////////////////////////////////////////////////////////////
