@@ -97,19 +97,30 @@ public E eliminarElemento() {
 return eliminarElementoFinal();
 }
 /////////////////////////////////////////////////////////////////////////
-
 @Override
 public E eliminarElementoInicio() {
-
-
-
-
+if (esVacia()){
+throw new NullPointerException();
+}else{
+Nodo<E> eliminado = primero;
+primero=primero.getSiguiente();
+tamanio--;
+if(tamanio==0){
+ultimo=null;
 }
-
+return eliminado.getInfo();
+}
+}
 /////////////////////////////////////////////////////////////////////////
 
 @Override
 public E eliminarElementoFinal() {
+if (esVacias()){
+throw new Null
+
+
+
+
 }
 
 /////////////////////////////////////////////////////////////////////////
