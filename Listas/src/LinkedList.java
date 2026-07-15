@@ -200,9 +200,18 @@ aux = aux.getSiguiente();
 }
 return (E[])arreglo;
 }
-
+////////////////////////////////////////////////////////////////////////
 @Override
 public E consultar(int posicion) {
+if(posicion < 0 || posicion >= tamanio){
+throw new IndexOutOfBoundsException("Posición inválida");
+}
+Nodo<E> aux = primero;
+for(int i = 0; i < posicion; i++){
+aux = aux.getSiguiente();
+}
+return aux.getInfo();
+}
 }
 
 /////////////////////////////////////////////////////////////////////////
