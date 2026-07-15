@@ -112,17 +112,29 @@ return eliminado.getInfo();
 }
 }
 /////////////////////////////////////////////////////////////////////////
-
 @Override
 public E eliminarElementoFinal() {
-if (esVacias()){
-throw new Null
-
-
-
-
+if (esVacia()){
+throw new NullPointerException();
+}else{
+if (tamanio == 1) {
+Nodo<E> eliminado = primero;
+primero=null;
+ultimo=null;
+tamanio--;
+return eliminado.getInfo();
 }
-
+Nodo<E> eliminado = ultimo;
+Nodo<E> aux = primero;
+while (aux.getSiguiente() != ultimo) {
+aux=aux.getSiguiente();
+}
+ultimo=aux;
+ultimo.setSiguiente(null);
+tamanio--;
+return eliminado.getInfo();
+}
+}
 /////////////////////////////////////////////////////////////////////////
 
 @Override
