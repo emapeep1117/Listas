@@ -68,7 +68,7 @@ this.tamanio++;
 @Override
 public void agregarPosicion(E e, int posicion) {
 if(posicion>=0 && posicion<=tamanio){
-if(posicion=0){
+if(posicion==0){
 agregarInicio(e);
 }else{
 if (posicion==tamanio){
@@ -102,10 +102,10 @@ throw new NullPointerException();
 }else{
 Nodo<E> eliminado = primero;
 primero=primero.getSiguiente();
+tamanio--;
 if(tamanio==0){
 ultimo=null;
 }
-tamanio--;
 return eliminado.getInfo();
 }
 }
@@ -212,30 +212,26 @@ aux = aux.getSiguiente();
 }
 return aux.getInfo();
 }
-}
 
 /////////////////////////////////////////////////////////////////////////
-
 @Override
 public Iterator<E> iterator() {
-return new Iterator<E>(){
-Nodo<E> nodo= primero;
-@Override
-public boolean hasNext() {
-return nodo!=null;
-}
+    return new Iterator<E>() {
+        Nodo<E> nodo = primero;
 
-/////////////////////////////////////////////////////////////////////////
+        @Override
+        public boolean hasNext() {
+            return nodo != null;
+        }
 
-@Override
-public E next() {
-E tmp=nodo.getInfo();
-nodo=nodo.getSiguiente();
-return tmp;
+        @Override
+        public E next() {
+            E tmp = nodo.getInfo();
+            nodo = nodo.getSiguiente();
+            return tmp;
+        }
+    };
 }
 }
-}
-}
-
 
 
