@@ -102,10 +102,10 @@ throw new NullPointerException();
 }else{
 Nodo<E> eliminado = primero;
 primero=primero.getSiguiente();
-tamanio--;
 if(tamanio==0){
 ultimo=null;
 }
+tamanio--;
 return eliminado.getInfo();
 }
 }
@@ -185,6 +185,9 @@ return tamanio;
 
 @Override
 public void limpiarLista() {
+primero = null;
+ultimo = null;
+tamanio = 0;
 }
 @SuppressWarnings("unchecked")
 @Override
