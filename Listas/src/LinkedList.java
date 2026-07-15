@@ -26,11 +26,9 @@ void setInfo(E info) {
 this.info = info;
 }
 }
-
 private Nodo<E> primero=null;
 private Nodo<E> ultimo=null;
 private int tamanio=0;
-
 /////////////////////////////////////////////////////////////////////////
 @Override
 public void agregarElemento(E e) {
@@ -136,29 +134,50 @@ return eliminado.getInfo();
 }
 }
 /////////////////////////////////////////////////////////////////////////
-
 @Override
 public E eliminarElementoPosicion(int posicion) {
-
-
-
-
-
-
+if (esVacia()) {
+throw new NullPointerException("La lista está vacía");
 }
-
-/////////////////////////////////////////////////////////////////////////
-
+if (posicion < 0 || posicion >= tamanio) {
+throw new IndexOutOfBoundsException("Posición inválida");
+}
+Nodo<E> eliminado;
+E datoEliminado;
+if (posicion == 0) {
+eliminado = primero;
+datoEliminado = eliminado.getInfo();
+primero = primero.getSiguiente();
+if (tamanio == 1) {
+ultimo = null;
+}
+eliminado.setSiguiente(null);
+tamanio--;
+return datoEliminado;
+}
+Nodo<E> aux = primero;
+for (int i = 0; i < posicion - 1; i++) {
+aux = aux.getSiguiente();
+}
+eliminado = aux.getSiguiente();
+datoEliminado = eliminado.getInfo();
+aux.setSiguiente(eliminado.getSiguiente());
+if (eliminado == ultimo) {
+ultimo = aux;
+}
+eliminado.setSiguiente(null);
+tamanio--;
+return datoEliminado;
+}
+////////////////////////////////////////////////////////////////////////-
 @Override
 public boolean esVacia() {
-return tamanio==0;
+return tamanio == 0;
 }
-
 /////////////////////////////////////////////////////////////////////////
 
 @Override
 public int numElementos() {
-// TODO Auto-generated method stub
 return tamanio;
 }
 
